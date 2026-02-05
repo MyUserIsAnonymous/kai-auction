@@ -13,6 +13,7 @@
             --light: #f8f9fa;
             --dark: #343a40;
             --card-bg: #ffffff;
+            --update: #38b000;
         }
         
         * {
@@ -78,6 +79,79 @@
             border-left: 4px solid var(--primary);
         }
         
+        /* Password Modal */
+        .password-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .password-modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .password-input {
+            width: 100%;
+            padding: 15px;
+            margin: 15px 0;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+        
+        /* Admin Panel */
+        .admin-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 2px solid var(--update);
+            display: none;
+        }
+        
+        .admin-toggle {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .admin-btn {
+            background: var(--update);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .update-price-btn {
+            background: var(--update);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-left: 10px;
+        }
+        
         /* Items Grid */
         .items-grid {
             display: grid;
@@ -125,11 +199,23 @@
             line-height: 1.5;
         }
         
-        .item-price {
+        .price-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .current-price {
             font-size: 1.8rem;
             font-weight: 800;
             color: var(--accent);
-            margin: 15px 0;
+        }
+        
+        .starting-price {
+            font-size: 1rem;
+            color: #888;
+            text-decoration: line-through;
         }
         
         .bid-section {
@@ -141,11 +227,17 @@
             border: 2px dashed #dee2e6;
         }
         
-        .bid-price {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--secondary);
+        .bid-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .bid-count {
+            color: var(--primary);
+            font-weight: 600;
         }
         
         .telegram-button {
@@ -211,11 +303,6 @@
             color: white;
         }
         
-        .telegram-contact-btn:hover {
-            background: #0077b5;
-            transform: translateY(-2px);
-        }
-        
         /* Share Section */
         .share-section {
             text-align: center;
@@ -245,18 +332,10 @@
             gap: 8px;
         }
         
-        .share-btn:hover {
-            background: #e9ecef;
-        }
-        
         .telegram-share {
             background: #0088cc;
             color: white;
             border: none;
-        }
-        
-        .telegram-share:hover {
-            background: #0077b5;
         }
         
         /* Footer */
@@ -341,18 +420,32 @@
             color: #721c24;
         }
         
-        /* Telegram Style Elements */
-        .telegram-icon {
-            color: #0088cc;
+        /* Price Update Animation */
+        @keyframes priceUpdate {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); color: var(--update); }
+            100% { transform: scale(1); }
         }
         
-        .telegram-badge {
-            background: #0088cc;
+        .price-updated {
+            animation: priceUpdate 0.5s ease;
+        }
+        
+        /* Admin badge */
+        .admin-badge {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--update);
             color: white;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            margin-left: 10px;
+            padding: 10px 15px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            display: none;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 100;
         }
     </style>
 </head>
@@ -361,15 +454,40 @@
         <!-- Header -->
         <header>
             <div class="logo">
-                <i class="fab fa-telegram telegram-icon"></i>
+                <i class="fab fa-telegram"></i>
                 <h1>Kai's Auction</h1>
             </div>
-            <p class="tagline">Pre-owned Items • Bid via Telegram • Simple & Fast</p>
+            <p class="tagline">Pre-owned Items • Bid via Telegram • Live Updates</p>
             
             <div class="instructions">
-                <p><strong>How it works:</strong> See something you like? Click "Bid via Telegram" to send me a direct message with your bid!</p>
+                <p><strong>How it works:</strong> Bid amounts shown are the current highest bids. Click "Bid via Telegram" to place a higher bid!</p>
             </div>
         </header>
+        
+        <!-- Owner Login Button -->
+        <div class="admin-toggle">
+            <button class="admin-btn" onclick="showPasswordModal()">
+                <i class="fas fa-user-shield"></i> Owner Login
+            </button>
+        </div>
+        
+        <!-- Admin Panel (Hidden until password is entered) -->
+        <div class="admin-panel" id="adminPanel">
+            <h3><i class="fas fa-user-shield"></i> Owner Controls</h3>
+            <p>Update prices after receiving bids on Telegram:</p>
+            <div id="adminItemsList"></div>
+            <div style="margin-top: 15px;">
+                <button class="admin-btn" onclick="addNewItem()">
+                    <i class="fas fa-plus"></i> Add New Item
+                </button>
+                <button class="admin-btn" onclick="saveAllItems()" style="background: var(--primary);">
+                    <i class="fas fa-save"></i> Save All Changes
+                </button>
+                <button class="admin-btn" onclick="logout()" style="background: var(--accent);">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
         
         <!-- Items for Sale -->
         <div class="items-grid" id="itemsContainer">
@@ -386,9 +504,6 @@
                     <i class="fab fa-telegram"></i> @kai_btc on Telegram
                 </a>
             </div>
-            <p style="margin-top: 15px; color: #666; font-size: 0.9rem;">
-                <i class="fas fa-info-circle"></i> Make sure you have Telegram installed
-            </p>
         </section>
         
         <!-- Share Section -->
@@ -398,7 +513,7 @@
             
             <div class="share-buttons">
                 <button class="share-btn telegram-share" onclick="shareViaTelegram()">
-                    <i class="fab fa-telegram"></i> Telegram
+                    <i class="fab fa-telegram"></i> Share on Telegram
                 </button>
                 <button class="share-btn" onclick="copyLink()">
                     <i class="fas fa-link"></i> Copy Link
@@ -413,7 +528,7 @@
         <!-- Footer -->
         <footer>
             <p><strong>Kai's Auction</strong> • Telegram-based Bidding</p>
-            <p>No registration needed • No fees • Telegram DM to bid</p>
+            <p>Prices update when new bids are received</p>
             <p style="margin-top: 15px; font-family: monospace; background: #f1f3f5; padding: 8px 15px; border-radius: 5px; display: inline-block;">
                 <span id="siteUrl">Loading...</span>
             </p>
@@ -422,77 +537,173 @@
             </p>
         </footer>
     </div>
+    
+    <!-- Password Modal -->
+    <div class="password-modal" id="passwordModal">
+        <div class="password-modal-content">
+            <h3><i class="fas fa-lock"></i> Owner Authentication</h3>
+            <p>Enter the owner password to access controls:</p>
+            <input type="password" id="passwordInput" class="password-input" placeholder="Enter password">
+            <div style="display: flex; gap: 10px;">
+                <button class="admin-btn" onclick="checkPassword()" style="flex: 1;">
+                    <i class="fas fa-unlock"></i> Login
+                </button>
+                <button class="admin-btn" onclick="closePasswordModal()" style="background: #666; flex: 1;">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+            </div>
+            <div id="passwordError" style="color: var(--accent); margin-top: 10px; display: none;">
+                <i class="fas fa-exclamation-circle"></i> Incorrect password
+            </div>
+        </div>
+    </div>
+    
+    <!-- Admin Badge -->
+    <div class="admin-badge" id="adminBadge">
+        <i class="fas fa-user-shield"></i>
+        <span>Owner Mode</span>
+    </div>
 
     <script>
-        // Items data
+        // ========== SECURITY SETTINGS ==========
+        const OWNER_PASSWORD = "kai123";
+        
+        // Session timeout (in minutes)
+        const SESSION_TIMEOUT = 60; // 1 hour
+        
+        // ========== ITEMS DATA ==========
         const items = [
             {
                 id: 1,
                 name: "Vintage Camera",
-                description: "Like new condition, perfect for photography enthusiasts. Includes original case.",
-                price: 45.00,
+                description: "Like new condition, perfect for photography enthusiasts.",
+                startingPrice: 45.00,
+                currentPrice: 50.00,
+                bids: 3,
                 image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&h=300&fit=crop",
                 status: "available"
             },
             {
                 id: 2,
                 name: "Designer Watch",
-                description: "Authentic luxury watch, includes original box and papers. Keeps excellent time.",
-                price: 120.00,
+                description: "Authentic luxury watch, includes original box.",
+                startingPrice: 120.00,
+                currentPrice: 150.00,
+                bids: 5,
                 image: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=400&h=300&fit=crop",
                 status: "available"
             },
             {
                 id: 3,
                 name: "Gaming Console",
-                description: "Latest model with 2 controllers and 5 popular games. Barely used.",
-                price: 200.00,
+                description: "Latest model with 2 controllers and 5 games.",
+                startingPrice: 200.00,
+                currentPrice: 220.00,
+                bids: 7,
                 image: "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=400&h=300&fit=crop",
-                status: "available"
-            },
-            {
-                id: 4,
-                name: "Wireless Headphones",
-                description: "Noise-cancelling, excellent sound quality. Comes with charging case.",
-                price: 75.00,
-                image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop",
-                status: "available"
-            },
-            {
-                id: 5,
-                name: "Mountain Bike",
-                description: "21-speed mountain bike, good condition. Recently serviced.",
-                price: 150.00,
-                image: "https://images.unsplash.com/photo-1532298229144-0ec0c57515c7?w=400&h=300&fit=crop",
-                status: "available"
-            },
-            {
-                id: 6,
-                name: "Leather Jacket",
-                description: "Genuine leather, size M. Classic style, timeless piece.",
-                price: 85.00,
-                image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&h=300&fit=crop",
                 status: "available"
             }
         ];
         
-        // Telegram username
         const telegramUsername = "kai_btc";
         
-        // DM message template
-        const telegramTemplate = `Hi! I'd like to bid on [ITEM_NAME]. 
-
-My bid: $[BID_AMOUNT]
-Starting price: $[STARTING_PRICE]
-
-[ADDITIONAL_MESSAGE]
-
-(From Kai's Auction)`;
+        // ========== AUTHENTICATION FUNCTIONS ==========
+        let isAuthenticated = false;
+        let loginTime = null;
         
-        // Initialize the page
+        function showPasswordModal() {
+            document.getElementById('passwordModal').style.display = 'flex';
+            document.getElementById('passwordInput').focus();
+        }
+        
+        function closePasswordModal() {
+            document.getElementById('passwordModal').style.display = 'none';
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('passwordError').style.display = 'none';
+        }
+        
+        function checkPassword() {
+            const input = document.getElementById('passwordInput').value;
+            
+            if (input === OWNER_PASSWORD) {
+                isAuthenticated = true;
+                loginTime = new Date();
+                closePasswordModal();
+                showAdminPanel();
+                startSessionTimer();
+                showAdminBadge();
+                alert("✓ Owner login successful!");
+            } else {
+                document.getElementById('passwordError').style.display = 'block';
+                document.getElementById('passwordInput').value = '';
+                document.getElementById('passwordInput').focus();
+            }
+        }
+        
+        function showAdminPanel() {
+            if (isAuthenticated) {
+                document.getElementById('adminPanel').style.display = 'block';
+                updateAdminPanel();
+            }
+        }
+        
+        function hideAdminPanel() {
+            document.getElementById('adminPanel').style.display = 'none';
+            hideAdminBadge();
+        }
+        
+        function showAdminBadge() {
+            document.getElementById('adminBadge').style.display = 'flex';
+        }
+        
+        function hideAdminBadge() {
+            document.getElementById('adminBadge').style.display = 'none';
+        }
+        
+        function logout() {
+            isAuthenticated = false;
+            loginTime = null;
+            hideAdminPanel();
+            alert("✓ Logged out successfully.");
+        }
+        
+        function startSessionTimer() {
+            // Check every minute if session expired
+            setInterval(() => {
+                if (isAuthenticated && loginTime) {
+                    const now = new Date();
+                    const diffMinutes = (now - loginTime) / (1000 * 60);
+                    
+                    if (diffMinutes > SESSION_TIMEOUT) {
+                        logout();
+                        alert("Session expired. Please login again.");
+                    }
+                }
+            }, 60000); // Check every minute
+        }
+        
+        function checkSession() {
+            // Check if session is still valid on page load
+            const savedLogin = localStorage.getItem('kai_last_login');
+            if (savedLogin) {
+                const loginTime = new Date(savedLogin);
+                const now = new Date();
+                const diffMinutes = (now - loginTime) / (1000 * 60);
+                
+                if (diffMinutes < SESSION_TIMEOUT) {
+                    isAuthenticated = true;
+                    showAdminPanel();
+                    showAdminBadge();
+                    startSessionTimer();
+                }
+            }
+        }
+        
+        // ========== ITEM MANAGEMENT ==========
         function init() {
             renderItems();
             document.getElementById('siteUrl').textContent = window.location.href;
+            checkSession(); // Check if session is still valid
             
             // Load saved items if any
             const savedItems = localStorage.getItem('kai_items');
@@ -510,7 +721,6 @@ Starting price: $[STARTING_PRICE]
             }
         }
         
-        // Render all items
         function renderItems() {
             const container = document.getElementById('itemsContainer');
             container.innerHTML = '';
@@ -528,107 +738,118 @@ Starting price: $[STARTING_PRICE]
                         </div>
                         <h3 class="item-title">${item.name}</h3>
                         <p class="item-description">${item.description}</p>
-                        <div class="item-price">$${item.price.toFixed(2)}</div>
+                        
+                        <div class="price-display">
+                            <div class="current-price" id="price-${item.id}">$${item.currentPrice.toFixed(2)}</div>
+                            <div class="starting-price">Starting: $${item.startingPrice.toFixed(2)}</div>
+                        </div>
                         
                         <div class="bid-section">
-                            <div class="bid-price">Starting Bid: $${item.price.toFixed(2)}</div>
-                            <button class="telegram-button" onclick="openTelegramBid('${item.name}', ${item.price})">
-                                <i class="fab fa-telegram"></i> Bid via Telegram
+                            <div class="bid-info">
+                                <span>${item.bids} bids placed</span>
+                                <span class="bid-count">Current highest: $${item.currentPrice.toFixed(2)}</span>
+                            </div>
+                            <button class="telegram-button" onclick="openTelegramBid('${item.name}', ${item.currentPrice})">
+                                <i class="fab fa-telegram"></i> Bid via Telegram (Min: $${(item.currentPrice + 1).toFixed(2)})
                             </button>
                         </div>
                     </div>
                 `;
                 container.appendChild(card);
             });
+            
+            if (isAuthenticated) {
+                updateAdminPanel();
+            }
         }
         
-        // Open Telegram for bidding
-        function openTelegramBid(itemName, itemPrice) {
-            // Ask for bid amount
-            const defaultBid = itemPrice + 5;
-            const bidInput = prompt(
-                `Enter your bid for "${itemName}":\n\nMinimum: $${itemPrice.toFixed(2)}\n(Suggested: $${defaultBid.toFixed(2)})`,
-                defaultBid.toFixed(2)
-            );
+        function updateAdminPanel() {
+            if (!isAuthenticated) return;
             
-            if (!bidInput) return; // User cancelled
+            const container = document.getElementById('adminItemsList');
+            container.innerHTML = '';
             
-            const bidAmount = parseFloat(bidInput);
-            
-            if (isNaN(bidAmount)) {
-                alert("Please enter a valid number for your bid.");
+            items.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.style.cssText = 'padding: 15px; border: 1px solid #ddd; border-radius: 10px; margin: 10px 0; background: #f9f9f9;';
+                itemDiv.innerHTML = `
+                    <strong>${item.name}</strong><br>
+                    <small>${item.description}</small>
+                    <div style="margin-top: 10px;">
+                        Starting: $${item.startingPrice.toFixed(2)}<br>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-top: 5px;">
+                            <span>Current Price: $${item.currentPrice.toFixed(2)}</span>
+                            <button class="update-price-btn" onclick="updateItemPrice(${item.id})">
+                                <i class="fas fa-edit"></i> Update
+                            </button>
+                        </div>
+                        Bids: ${item.bids}
+                        <div style="margin-top: 5px;">
+                            <button onclick="markAsSold(${item.id})" style="background: #666; color: white; border: none; padding: 5px 10px; border-radius: 5px; font-size: 0.8rem;">
+                                <i class="fas fa-tag"></i> Mark as Sold
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(itemDiv);
+            });
+        }
+        
+        function updateItemPrice(itemId) {
+            if (!isAuthenticated) {
+                alert("Please login first.");
+                showPasswordModal();
                 return;
             }
             
-            if (bidAmount < itemPrice) {
-                alert(`Bid must be at least $${itemPrice.toFixed(2)}`);
-                return;
-            }
+            const item = items.find(i => i.id === itemId);
+            if (!item) return;
             
-            // Ask for optional message
-            const additionalMessage = prompt("Add a message (optional):", "I'm interested in this item!");
+            const newPrice = parseFloat(prompt(`Update price for "${item.name}":\nCurrent: $${item.currentPrice.toFixed(2)}`, item.currentPrice + 10));
             
-            // Prepare the message
-            let telegramMessage = telegramTemplate
-                .replace('[ITEM_NAME]', itemName)
-                .replace('[BID_AMOUNT]', bidAmount.toFixed(2))
-                .replace('[STARTING_PRICE]', itemPrice.toFixed(2))
-                .replace('[ADDITIONAL_MESSAGE]', additionalMessage || '');
-            
-            // Clean up extra line breaks
-            telegramMessage = telegramMessage.replace(/\n\s*\n\s*\n/g, '\n\n');
-            
-            // Show confirmation and copy to clipboard
-            if (confirm(`Your bid: $${bidAmount.toFixed(2)} for "${itemName}"\n\nMessage will be copied to clipboard. Click OK to open Telegram.`)) {
-                // Copy to clipboard
-                navigator.clipboard.writeText(telegramMessage).then(() => {
-                    // Open Telegram
-                    const telegramUrl = `https://t.me/${telegramUsername}?text=${encodeURIComponent(telegramMessage)}`;
-                    window.open(telegramUrl, '_blank');
-                    
-                    // Optional: Show success message
-                    setTimeout(() => {
-                        alert("Message copied! Please send it to me on Telegram. If Telegram didn't open, please message @kai_btc manually.");
-                    }, 500);
-                });
-            }
-        }
-        
-        // Share functions
-        function shareViaTelegram() {
-            const text = `Check out Kai's Auction! Browse pre-owned items and bid via Telegram: ${window.location.href}\n\nDM @kai_btc to place your bids!`;
-            window.open(`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(text)}`, '_blank');
-        }
-        
-        function copyLink() {
-            navigator.clipboard.writeText(window.location.href);
-            const message = document.getElementById('linkCopied');
-            message.style.display = 'block';
-            setTimeout(() => {
-                message.style.display = 'none';
-            }, 2000);
-        }
-        
-        // Simple item editor (optional, accessible via console)
-        window.editItems = function() {
-            const json = JSON.stringify(items, null, 2);
-            const newJson = prompt('Edit items (JSON format):', json);
-            if (newJson) {
-                try {
-                    const parsed = JSON.parse(newJson);
-                    items.length = 0;
-                    items.push(...parsed);
-                    localStorage.setItem('kai_items', JSON.stringify(parsed));
-                    renderItems();
-                    alert('Items updated!');
-                } catch (e) {
-                    alert('Invalid JSON format');
+            if (!isNaN(newPrice) && newPrice > 0) {
+                item.currentPrice = newPrice;
+                item.bids += 1;
+                
+                // Update display with animation
+                const priceElement = document.getElementById(`price-${itemId}`);
+                if (priceElement) {
+                    priceElement.textContent = `$${newPrice.toFixed(2)}`;
+                    priceElement.classList.add('price-updated');
+                    setTimeout(() => priceElement.classList.remove('price-updated'), 500);
                 }
+                
+                renderItems();
+                saveAllItems();
+                alert(`✓ Price updated to $${newPrice.toFixed(2)}`);
             }
         }
         
-        // Add new item function
-        window.addNewItem = function() {
+        function markAsSold(itemId) {
+            if (!isAuthenticated) {
+                alert("Please login first.");
+                showPasswordModal();
+                return;
+            }
+            
+            const item = items.find(i => i.id === itemId);
+            if (!item) return;
+            
+            if (confirm(`Mark "${item.name}" as SOLD?`)) {
+                item.status = "sold";
+                renderItems();
+                saveAllItems();
+                alert(`✓ "${item.name}" marked as sold!`);
+            }
+        }
+        
+        function addNewItem() {
+            if (!isAuthenticated) {
+                alert("Please login first.");
+                showPasswordModal();
+                return;
+            }
+            
             const name = prompt("Item name:");
             if (!name) return;
             
@@ -644,19 +865,142 @@ Starting price: $[STARTING_PRICE]
                 id: Date.now(),
                 name: name,
                 description: description,
-                price: price,
+                startingPrice: price,
+                currentPrice: price,
+                bids: 0,
                 image: image || "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=400&h=300&fit=crop",
                 status: "available"
             };
             
             items.push(newItem);
-            localStorage.setItem('kai_items', JSON.stringify(items));
             renderItems();
-            alert('Item added!');
+            saveAllItems();
+            alert('✓ Item added!');
         }
         
-        // Initialize on load
+        function saveAllItems() {
+            localStorage.setItem('kai_items', JSON.stringify(items));
+        }
+        
+        // ========== BIDDING FUNCTIONS ==========
+        function openTelegramBid(itemName, currentPrice) {
+            const item = items.find(i => i.name === itemName);
+            if (!item) return;
+            
+            if (item.status === "sold") {
+                alert("Sorry, this item has been sold!");
+                return;
+            }
+            
+            const minBid = currentPrice + 1;
+            const suggestedBid = minBid + 5;
+            
+            const bidInput = prompt(
+                `Bid on "${itemName}":\n\nCurrent highest: $${currentPrice.toFixed(2)}\nMinimum bid: $${minBid.toFixed(2)}\n(Suggested: $${suggestedBid.toFixed(2)})`,
+                suggestedBid.toFixed(2)
+            );
+            
+            if (!bidInput) return;
+            
+            const bidAmount = parseFloat(bidInput);
+            
+            if (isNaN(bidAmount)) {
+                alert("Please enter a valid number.");
+                return;
+            }
+            
+            if (bidAmount <= currentPrice) {
+                alert(`Bid must be higher than $${currentPrice.toFixed(2)}`);
+                return;
+            }
+            
+            const additionalMessage = prompt("Add a message (optional):", "I'm placing a bid on this item!");
+            
+            const telegramMessage = `Bid on ${itemName}\n\nMy bid: $${bidAmount.toFixed(2)}\nCurrent price: $${currentPrice.toFixed(2)}\n\n${additionalMessage || ''}\n\n(From Kai's Auction)`;
+            
+            if (confirm(`Bid $${bidAmount.toFixed(2)} on "${itemName}"?\n\nMessage will be copied. Click OK to open Telegram.`)) {
+                navigator.clipboard.writeText(telegramMessage).then(() => {
+                    const telegramUrl = `https://t.me/${telegramUsername}?text=${encodeURIComponent(telegramMessage)}`;
+                    window.open(telegramUrl, '_blank');
+                    alert("✓ Message copied to clipboard!\n\nSend this message on Telegram to place your bid.");
+                });
+            }
+        }
+        
+        // ========== SHARE FUNCTIONS ==========
+        function shareViaTelegram() {
+            const text = `Check out Kai's Auction! Browse pre-owned items and bid via Telegram: ${window.location.href}\n\nDM @kai_btc to place your bids!`;
+            window.open(`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(text)}`, '_blank');
+        }
+        
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href);
+            const message = document.getElementById('linkCopied');
+            message.style.display = 'block';
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 2000);
+        }
+        
+        // ========== OWNER QUICK COMMANDS ==========
+        window.ownerUpdate = function(itemName, newPrice) {
+            // Quick update from console (for owners only)
+            if (!isAuthenticated) {
+                console.log("Please login first using Owner Login button.");
+                return;
+            }
+            
+            const item = items.find(i => i.name.toLowerCase().includes(itemName.toLowerCase()));
+            if (item) {
+                item.currentPrice = parseFloat(newPrice);
+                item.bids += 1;
+                renderItems();
+                saveAllItems();
+                console.log(`✓ Updated ${item.name} to $${newPrice}`);
+            } else {
+                console.log('Item not found');
+            }
+        }
+        
+        window.ownerEdit = function() {
+            if (!isAuthenticated) {
+                console.log("Please login first using Owner Login button.");
+                return;
+            }
+            
+            const json = JSON.stringify(items, null, 2);
+            const newJson = prompt('Edit items (JSON format):', json);
+            if (newJson) {
+                try {
+                    const parsed = JSON.parse(newJson);
+                    items.length = 0;
+                    items.push(...parsed);
+                    localStorage.setItem('kai_items', JSON.stringify(parsed));
+                    renderItems();
+                    alert('✓ Items updated!');
+                } catch (e) {
+                    alert('Invalid JSON format');
+                }
+            }
+        }
+        
+        // ========== INITIALIZE ==========
         document.addEventListener('DOMContentLoaded', init);
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('passwordModal');
+            if (event.target === modal) {
+                closePasswordModal();
+            }
+        }
+        
+        // Enter key for password
+        document.getElementById('passwordInput')?.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
     </script>
 </body>
 </html>

@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kai's Auction - Bid via DM</title>
+    <title>Kai's Auction</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #4a6fa5;
-            --secondary: #166088;
+            --primary: #0088cc; /* Telegram blue */
+            --secondary: #24a1de;
             --accent: #ff6b6b;
             --light: #f8f9fa;
             --dark: #343a40;
@@ -24,7 +24,7 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, #f0f8ff 0%, #e6f7ff 100%);
             min-height: 100vh;
             color: var(--dark);
         }
@@ -71,7 +71,7 @@
         }
         
         .instructions {
-            background: #e8f4fc;
+            background: #e8f7ff;
             padding: 15px;
             border-radius: 10px;
             margin-top: 20px;
@@ -148,7 +148,7 @@
             margin-bottom: 10px;
         }
         
-        .dm-button {
+        .telegram-button {
             display: inline-flex;
             align-items: center;
             gap: 10px;
@@ -162,11 +162,13 @@
             border: none;
             cursor: pointer;
             font-size: 1rem;
+            width: 100%;
+            justify-content: center;
         }
         
-        .dm-button:hover {
+        .telegram-button:hover {
             transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(74, 111, 165, 0.4);
+            box-shadow: 0 5px 15px rgba(0, 136, 204, 0.4);
         }
         
         /* Contact Info */
@@ -204,19 +206,14 @@
             transition: all 0.3s;
         }
         
-        .whatsapp-btn {
-            background: #25D366;
+        .telegram-contact-btn {
+            background: var(--primary);
             color: white;
         }
         
-        .telegram-btn {
-            background: #0088cc;
-            color: white;
-        }
-        
-        .email-btn {
-            background: #EA4335;
-            color: white;
+        .telegram-contact-btn:hover {
+            background: #0077b5;
+            transform: translateY(-2px);
         }
         
         /* Share Section */
@@ -252,6 +249,16 @@
             background: #e9ecef;
         }
         
+        .telegram-share {
+            background: #0088cc;
+            color: white;
+            border: none;
+        }
+        
+        .telegram-share:hover {
+            background: #0077b5;
+        }
+        
         /* Footer */
         footer {
             text-align: center;
@@ -282,6 +289,17 @@
             
             .logo h1 {
                 font-size: 2.2rem;
+            }
+            
+            .share-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .share-btn {
+                width: 100%;
+                max-width: 250px;
+                justify-content: center;
             }
         }
         
@@ -322,6 +340,20 @@
             background: #f8d7da;
             color: #721c24;
         }
+        
+        /* Telegram Style Elements */
+        .telegram-icon {
+            color: #0088cc;
+        }
+        
+        .telegram-badge {
+            background: #0088cc;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body>
@@ -329,13 +361,13 @@
         <!-- Header -->
         <header>
             <div class="logo">
-                <i class="fas fa-gavel"></i>
+                <i class="fab fa-telegram telegram-icon"></i>
                 <h1>Kai's Auction</h1>
             </div>
-            <p class="tagline">Pre-owned items • Bid via DM • Simple & Fast</p>
+            <p class="tagline">Pre-owned Items • Bid via Telegram • Simple & Fast</p>
             
             <div class="instructions">
-                <p><strong>How it works:</strong> See something you like? Note the item name and price, then DM me to place your bid!</p>
+                <p><strong>How it works:</strong> See something you like? Click "Bid via Telegram" to send me a direct message with your bid!</p>
             </div>
         </header>
         
@@ -346,23 +378,16 @@
         
         <!-- Contact Section -->
         <section class="contact-section">
-            <h2 class="contact-title">Contact Me to Bid</h2>
+            <h2 class="contact-title">Contact Me on Telegram</h2>
             <p>Direct message me with the item name and your bid amount.</p>
             
             <div class="contact-methods">
-                <a href="https://wa.me/1234567890" class="contact-btn whatsapp-btn" target="_blank">
-                    <i class="fab fa-whatsapp"></i> WhatsApp
-                </a>
-                <a href="https://t.me/yourusername" class="contact-btn telegram-btn" target="_blank">
-                    <i class="fab fa-telegram"></i> Telegram
-                </a>
-                <a href="mailto:youremail@example.com" class="contact-btn email-btn">
-                    <i class="fas fa-envelope"></i> Email
+                <a href="https://t.me/kai_btc" class="contact-btn telegram-contact-btn" target="_blank">
+                    <i class="fab fa-telegram"></i> @kai_btc on Telegram
                 </a>
             </div>
-            
-            <p style="margin-top: 20px; font-size: 0.9rem; color: #666;">
-                Replace the links above with your actual contact info in the HTML code!
+            <p style="margin-top: 15px; color: #666; font-size: 0.9rem;">
+                <i class="fas fa-info-circle"></i> Make sure you have Telegram installed
             </p>
         </section>
         
@@ -372,11 +397,8 @@
             <p>Send this page to friends who might be interested!</p>
             
             <div class="share-buttons">
-                <button class="share-btn" onclick="shareViaWhatsApp()">
-                    <i class="fab fa-whatsapp"></i> WhatsApp
-                </button>
-                <button class="share-btn" onclick="shareViaMessage()">
-                    <i class="fas fa-sms"></i> Text
+                <button class="share-btn telegram-share" onclick="shareViaTelegram()">
+                    <i class="fab fa-telegram"></i> Telegram
                 </button>
                 <button class="share-btn" onclick="copyLink()">
                     <i class="fas fa-link"></i> Copy Link
@@ -390,19 +412,19 @@
         
         <!-- Footer -->
         <footer>
-            <p><strong>Kai's Auction</strong> • Simple DM-based Bidding</p>
-            <p>No registration needed • No fees • DM to bid</p>
+            <p><strong>Kai's Auction</strong> • Telegram-based Bidding</p>
+            <p>No registration needed • No fees • Telegram DM to bid</p>
             <p style="margin-top: 15px; font-family: monospace; background: #f1f3f5; padding: 8px 15px; border-radius: 5px; display: inline-block;">
                 <span id="siteUrl">Loading...</span>
             </p>
             <p style="margin-top: 10px; font-size: 0.8rem;">
-                Hosted for free on GitHub Pages
+                Designed and built by Kai • Powered by Telegram
             </p>
         </footer>
     </div>
 
     <script>
-        // Your items data - EDIT THESE!
+        // Items data
         const items = [
             {
                 id: 1,
@@ -454,8 +476,18 @@
             }
         ];
         
-        // DM message template - EDIT THIS!
-        const dmTemplate = "Hi! I'd like to bid on [ITEM_NAME]. My bid is $[BID_AMOUNT]. [ADDITIONAL_MESSAGE]";
+        // Telegram username
+        const telegramUsername = "kai_btc";
+        
+        // DM message template
+        const telegramTemplate = `Hi! I'd like to bid on [ITEM_NAME]. 
+
+My bid: $[BID_AMOUNT]
+Starting price: $[STARTING_PRICE]
+
+[ADDITIONAL_MESSAGE]
+
+(From Kai's Auction)`;
         
         // Initialize the page
         function init() {
@@ -500,8 +532,8 @@
                         
                         <div class="bid-section">
                             <div class="bid-price">Starting Bid: $${item.price.toFixed(2)}</div>
-                            <button class="dm-button" onclick="prepareDM('${item.name}', ${item.price})">
-                                <i class="fas fa-paper-plane"></i> DM Me to Bid
+                            <button class="telegram-button" onclick="openTelegramBid('${item.name}', ${item.price})">
+                                <i class="fab fa-telegram"></i> Bid via Telegram
                             </button>
                         </div>
                     </div>
@@ -510,47 +542,62 @@
             });
         }
         
-        // Prepare DM message
-        function prepareDM(itemName, itemPrice) {
+        // Open Telegram for bidding
+        function openTelegramBid(itemName, itemPrice) {
+            // Ask for bid amount
             const defaultBid = itemPrice + 5;
-            const message = prompt(
-                `Enter your bid for "${itemName}":\n(Minimum: $${itemPrice.toFixed(2)})`,
+            const bidInput = prompt(
+                `Enter your bid for "${itemName}":\n\nMinimum: $${itemPrice.toFixed(2)}\n(Suggested: $${defaultBid.toFixed(2)})`,
                 defaultBid.toFixed(2)
             );
             
-            if (message && !isNaN(parseFloat(message)) && parseFloat(message) >= itemPrice) {
-                const bidAmount = parseFloat(message);
-                const additional = prompt("Add a message (optional):", "I'm interested in this item!");
-                
-                const dmMessage = dmTemplate
-                    .replace('[ITEM_NAME]', itemName)
-                    .replace('[BID_AMOUNT]', bidAmount.toFixed(2))
-                    .replace('[ADDITIONAL_MESSAGE]', additional || '');
-                
-                alert("Copy this message and send it to me via DM:\n\n" + dmMessage + 
-                      "\n\nClick OK to open WhatsApp, or copy the message above.");
-                
-                // Open WhatsApp with the message
-                const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(dmMessage)}`;
-                window.open(whatsappUrl, '_blank');
-            } else if (message) {
+            if (!bidInput) return; // User cancelled
+            
+            const bidAmount = parseFloat(bidInput);
+            
+            if (isNaN(bidAmount)) {
+                alert("Please enter a valid number for your bid.");
+                return;
+            }
+            
+            if (bidAmount < itemPrice) {
                 alert(`Bid must be at least $${itemPrice.toFixed(2)}`);
+                return;
+            }
+            
+            // Ask for optional message
+            const additionalMessage = prompt("Add a message (optional):", "I'm interested in this item!");
+            
+            // Prepare the message
+            let telegramMessage = telegramTemplate
+                .replace('[ITEM_NAME]', itemName)
+                .replace('[BID_AMOUNT]', bidAmount.toFixed(2))
+                .replace('[STARTING_PRICE]', itemPrice.toFixed(2))
+                .replace('[ADDITIONAL_MESSAGE]', additionalMessage || '');
+            
+            // Clean up extra line breaks
+            telegramMessage = telegramMessage.replace(/\n\s*\n\s*\n/g, '\n\n');
+            
+            // Show confirmation and copy to clipboard
+            if (confirm(`Your bid: $${bidAmount.toFixed(2)} for "${itemName}"\n\nMessage will be copied to clipboard. Click OK to open Telegram.`)) {
+                // Copy to clipboard
+                navigator.clipboard.writeText(telegramMessage).then(() => {
+                    // Open Telegram
+                    const telegramUrl = `https://t.me/${telegramUsername}?text=${encodeURIComponent(telegramMessage)}`;
+                    window.open(telegramUrl, '_blank');
+                    
+                    // Optional: Show success message
+                    setTimeout(() => {
+                        alert("Message copied! Please send it to me on Telegram. If Telegram didn't open, please message @kai_btc manually.");
+                    }, 500);
+                });
             }
         }
         
         // Share functions
-        function shareViaWhatsApp() {
-            const text = `Check out Kai's Auction! Browse pre-owned items and DM to bid: ${window.location.href}`;
-            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
-        }
-        
-        function shareViaMessage() {
-            const text = `Kai's Auction - Browse items and DM to bid: ${window.location.href}`;
-            if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
-                window.open(`sms:&body=${encodeURIComponent(text)}`);
-            } else {
-                window.open(`sms:?body=${encodeURIComponent(text)}`);
-            }
+        function shareViaTelegram() {
+            const text = `Check out Kai's Auction! Browse pre-owned items and bid via Telegram: ${window.location.href}\n\nDM @kai_btc to place your bids!`;
+            window.open(`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(text)}`, '_blank');
         }
         
         function copyLink() {
@@ -578,6 +625,34 @@
                     alert('Invalid JSON format');
                 }
             }
+        }
+        
+        // Add new item function
+        window.addNewItem = function() {
+            const name = prompt("Item name:");
+            if (!name) return;
+            
+            const description = prompt("Item description:");
+            if (!description) return;
+            
+            const price = parseFloat(prompt("Starting price:"));
+            if (isNaN(price)) return;
+            
+            const image = prompt("Image URL (optional):", "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=400&h=300&fit=crop");
+            
+            const newItem = {
+                id: Date.now(),
+                name: name,
+                description: description,
+                price: price,
+                image: image || "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=400&h=300&fit=crop",
+                status: "available"
+            };
+            
+            items.push(newItem);
+            localStorage.setItem('kai_items', JSON.stringify(items));
+            renderItems();
+            alert('Item added!');
         }
         
         // Initialize on load

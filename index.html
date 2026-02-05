@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kai's Auction - Bid on Pre-Owned Items</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --secondary: #10b981;
+            --dark: #1f2937;
+            --light: #f9fafb;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 2rem 0;
+            color: white;
+        }
+        
+        .logo {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .auction-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 2rem 0;
+        }
+        
+        .item-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .item-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .item-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .item-info {
+            padding: 20px;
+        }
+        
+        .item-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .item-price {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--secondary);
+            margin: 10px 0;
+        }
+        
+        .bid-form {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .bid-input {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #e5e7eb;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .bid-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        
+        .bid-btn:hover {
+            background: #4338ca;
+        }
+        
+        .notifications {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 2rem 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .notification-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 500px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-input {
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .submit-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        
+        .share-section {
+            text-align: center;
+            margin: 3rem 0;
+            color: white;
+        }
+        
+        .share-btn {
+            background: white;
+            color: var(--primary);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            margin: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: white;
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .auction-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">Kai's Auction</div>
+            <div class="tagline">Bid on pre-owned items. Share with friends. Get notified.</div>
+        </header>
+        
+        <section class="notifications">
+            <h2>Get Bid Notifications</h2>
+            <p>Enter your email to receive notifications when someone bids on your items:</p>
+            <form class="notification-form" id="notificationForm">
+                <div class="form-group">
+                    <input type="email" class="form-input" id="emailInput" 
+                           placeholder="your-email@example.com" required>
+                </div>
+                <button type="submit" class="submit-btn">Save Email for Notifications</button>
+            </form>
+        </section>
+        
+        <section class="auction-grid" id="auctionItems">
+            <!-- Items will be loaded here -->
+        </section>
+        
+        <section class="share-section">
+            <h2>Share with Friends</h2>
+            <button class="share-btn" onclick="shareViaWhatsApp()">
+                📱 Share on WhatsApp
+            </button>
+            <button class="share-btn" onclick="shareViaEmail()">
+                ✉️ Share via Email
+            </button>
+        </section>
+        
+        <footer>
+            <p>Kai's Auction &copy; 2024 | Free Bidding Platform</p>
+            <p>Running on GitHub Pages</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Sample auction items
+        const auctionItems = [
+            {
+                id: 1,
+                title: "Vintage Camera",
+                description: "Like new condition, barely used",
+                image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&h=300&fit=crop",
+                currentPrice: 45.00,
+                bids: 3
+            },
+            {
+                id: 2,
+                title: "Designer Watch",
+                description: "Authentic, includes original box",
+                image: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=400&h=300&fit=crop",
+                currentPrice: 120.00,
+                bids: 5
+            },
+            {
+                id: 3,
+                title: "Gaming Console",
+                description: "With 2 controllers and games",
+                image: "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w-400&h=300&fit=crop",
+                currentPrice: 200.00,
+                bids: 7
+            }
+        ];
+        
+        // Load auction items
+        function loadAuctionItems() {
+            const container = document.getElementById('auctionItems');
+            container.innerHTML = '';
+            
+            auctionItems.forEach(item => {
+                const itemCard = `
+                    <div class="item-card">
+                        <img src="${item.image}" alt="${item.title}" class="item-image">
+                        <div class="item-info">
+                            <h3 class="item-title">${item.title}</h3>
+                            <p>${item.description}</p>
+                            <div class="item-price">$${item.currentPrice.toFixed(2)}</div>
+                            <p>${item.bids} bids so far</p>
+                            <form class="bid-form" onsubmit="placeBid(event, ${item.id})">
+                                <input type="number" class="bid-input" 
+                                       min="${item.currentPrice + 1}" 
+                                       step="0.01" 
+                                       placeholder="Enter bid amount" 
+                                       required>
+                                <button type="submit" class="bid-btn">Place Bid</button>
+                            </form>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += itemCard;
+            });
+        }
+        
+        // Place a bid
+        async function placeBid(event, itemId) {
+            event.preventDefault();
+            const bidAmount = parseFloat(event.target.querySelector('.bid-input').value);
+            const item = auctionItems.find(i => i.id === itemId);
+            
+            if (bidAmount > item.currentPrice) {
+                item.currentPrice = bidAmount;
+                item.bids++;
+                
+                // Save bid to localStorage
+                const bids = JSON.parse(localStorage.getItem('kai_auction_bids') || '[]');
+                bids.push({
+                    itemId,
+                    itemTitle: item.title,
+                    amount: bidAmount,
+                    timestamp: new Date().toISOString()
+                });
+                localStorage.setItem('kai_auction_bids', JSON.stringify(bids));
+                
+                // Send notification
+                await sendBidNotification(item, bidAmount);
+                
+                alert(`Bid of $${bidAmount.toFixed(2)} placed successfully!`);
+                loadAuctionItems();
+            } else {
+                alert('Bid must be higher than current price!');
+            }
+        }
+        
+        // Send bid notification via Formspree
+        async function sendBidNotification(item, bidAmount) {
+            const userEmail = localStorage.getItem('kai_auction_email');
+            
+            if (!userEmail) return;
+            
+            try {
+                // Using Formspree as a free email service
+                const response = await fetch('https://formspree.io/f/mzblljyp', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: userEmail,
+                        subject: `New Bid on ${item.title}!`,
+                        message: `Someone bid $${bidAmount.toFixed(2)} on "${item.title}" at Kai's Auction.`,
+                        item: item.title,
+                        bid: bidAmount,
+                        timestamp: new Date().toISOString()
+                    })
+                });
+                
+                console.log('Notification sent to:', userEmail);
+            } catch (error) {
+                console.error('Error sending notification:', error);
+            }
+        }
+        
+        // Save notification email
+        document.getElementById('notificationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('emailInput').value;
+            localStorage.setItem('kai_auction_email', email);
+            alert('Email saved! You will receive bid notifications.');
+        });
+        
+        // Share functions
+        function shareViaWhatsApp() {
+            const text = "Check out Kai's Auction! Bid on pre-owned items: " + window.location.href;
+            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+        }
+        
+        function shareViaEmail() {
+            const subject = "Check out Kai's Auction";
+            const body = "Hi! I'm using Kai's Auction to sell some items. Come check it out and place a bid!\n\n" + window.location.href;
+            window.open(`mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
+        }
+        
+        // Initialize
+        window.onload = loadAuctionItems;
+        
+        // Check for saved email
+        const savedEmail = localStorage.getItem('kai_auction_email');
+        if (savedEmail) {
+            document.getElementById('emailInput').value = savedEmail;
+        }
+    </script>
+</body>
+</html>

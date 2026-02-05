@@ -3,49 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kai's Auction - Bid on Pre-Owned Items</title>
+    <title>Kai's Auction - Bid via DM</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #3a86ff;
-            --secondary: #8338ec;
-            --success: #38b000;
-            --danger: #ff006e;
-            --warning: #ffbe0b;
-            --dark: #1a1a2e;
+            --primary: #4a6fa5;
+            --secondary: #166088;
+            --accent: #ff6b6b;
             --light: #f8f9fa;
+            --dark: #343a40;
             --card-bg: #ffffff;
-            --shadow: rgba(0, 0, 0, 0.1);
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #333;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
-            padding: 20px;
+            color: var(--dark);
         }
         
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 20px;
         }
         
         /* Header */
-        .header {
+        header {
             text-align: center;
-            padding: 40px 20px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
+            padding: 30px 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
             margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            backdrop-filter: blur(10px);
         }
         
         .logo {
@@ -53,138 +50,61 @@
             align-items: center;
             justify-content: center;
             gap: 15px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
         
-        .logo-icon {
+        .logo i {
             font-size: 2.5rem;
             color: var(--primary);
         }
         
-        .logo-text {
-            font-size: 3.5rem;
+        .logo h1 {
+            font-size: 2.8rem;
+            color: var(--primary);
             font-weight: 800;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
         
         .tagline {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             color: #666;
-            margin-bottom: 25px;
-        }
-        
-        /* Setup Section */
-        .setup-section {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 20px var(--shadow);
-        }
-        
-        .section-title {
-            font-size: 1.8rem;
-            color: var(--dark);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .section-title i {
-            color: var(--primary);
-        }
-        
-        /* Form Styles */
-        .form-group {
             margin-bottom: 20px;
         }
         
-        .form-label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #444;
-        }
-        
-        .form-input {
-            width: 100%;
+        .instructions {
+            background: #e8f4fc;
             padding: 15px;
-            border: 2px solid #e1e5e9;
             border-radius: 10px;
-            font-size: 1rem;
-            transition: all 0.3s;
-            background: var(--light);
+            margin-top: 20px;
+            border-left: 4px solid var(--primary);
         }
         
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.2);
-        }
-        
-        .btn {
-            padding: 15px 30px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(58, 134, 255, 0.4);
-        }
-        
-        /* Items Section */
-        .items-section {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 20px var(--shadow);
-        }
-        
+        /* Items Grid */
         .items-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 25px;
-            margin-top: 20px;
+            margin: 30px 0;
         }
         
         .item-card {
             background: var(--card-bg);
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 5px 15px var(--shadow);
-            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
             border: 1px solid #eaeaea;
         }
         
         .item-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
         }
         
         .item-image {
             width: 100%;
-            height: 200px;
+            height: 220px;
             object-fit: cover;
-            background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
+            background: #f0f0f0;
         }
         
         .item-content {
@@ -192,139 +112,105 @@
         }
         
         .item-title {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 700;
-            color: var(--dark);
+            color: var(--primary);
             margin-bottom: 10px;
         }
         
         .item-description {
             color: #666;
             margin-bottom: 15px;
+            font-size: 0.95rem;
             line-height: 1.5;
         }
         
         .item-price {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 800;
-            color: var(--success);
-            margin-bottom: 15px;
+            color: var(--accent);
+            margin: 15px 0;
         }
         
-        .bid-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding: 10px 0;
-            border-top: 1px solid #eee;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .bid-count {
-            color: #666;
-            font-size: 0.9rem;
-        }
-        
-        .bid-form {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .bid-input-group {
-            flex: 1;
-            position: relative;
-        }
-        
-        .bid-input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e1e5e9;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-        }
-        
-        .bid-btn {
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            color: white;
-            border: none;
-            padding: 0 25px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .bid-btn:hover {
-            transform: scale(1.05);
-        }
-        
-        /* Notifications Section */
-        .notifications-section {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 20px var(--shadow);
-        }
-        
-        .notification-list {
-            max-height: 300px;
-            overflow-y: auto;
-            margin-top: 20px;
-            padding-right: 10px;
-        }
-        
-        .notification-item {
-            background: var(--light);
+        .bid-section {
+            background: #f8f9fa;
             padding: 15px;
             border-radius: 10px;
-            margin-bottom: 10px;
-            border-left: 4px solid var(--primary);
-        }
-        
-        .notification-text {
-            margin-bottom: 5px;
-        }
-        
-        .notification-time {
-            font-size: 0.8rem;
-            color: #888;
-        }
-        
-        /* Share Section */
-        .share-section {
+            margin-top: 15px;
             text-align: center;
-            background: rgba(255, 255, 255, 0.95);
+            border: 2px dashed #dee2e6;
+        }
+        
+        .bid-price {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+        
+        .dm-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .dm-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(74, 111, 165, 0.4);
+        }
+        
+        /* Contact Info */
+        .contact-section {
+            background: white;
             border-radius: 15px;
             padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 20px var(--shadow);
+            margin: 40px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            text-align: center;
         }
         
-        .share-buttons {
+        .contact-title {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .contact-methods {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 20px;
             flex-wrap: wrap;
             margin-top: 20px;
         }
         
-        .share-btn {
-            padding: 12px 25px;
-            border-radius: 50px;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
+        .contact-btn {
             display: flex;
             align-items: center;
             gap: 10px;
+            padding: 12px 25px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
         }
         
         .whatsapp-btn {
             background: #25D366;
+            color: white;
+        }
+        
+        .telegram-btn {
+            background: #0088cc;
             color: white;
         }
         
@@ -333,524 +219,338 @@
             color: white;
         }
         
-        .link-btn {
-            background: var(--primary);
-            color: white;
+        /* Share Section */
+        .share-section {
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+        
+        .share-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .share-btn {
+            padding: 10px 20px;
+            border-radius: 10px;
+            background: var(--light);
+            border: 1px solid #dee2e6;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .share-btn:hover {
+            background: #e9ecef;
         }
         
         /* Footer */
-        .footer {
+        footer {
             text-align: center;
-            padding: 30px;
-            color: white;
-            background: rgba(0, 0, 0, 0.3);
+            padding: 30px 20px;
+            color: #666;
+            font-size: 0.9rem;
+            background: rgba(255,255,255,0.8);
             border-radius: 15px;
-            backdrop-filter: blur(10px);
-        }
-        
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        
-        .modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            max-width: 500px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        
-        .modal-title {
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-            color: var(--dark);
-        }
-        
-        .close-modal {
-            float: right;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #999;
+            margin-top: 30px;
         }
         
         /* Responsive */
         @media (max-width: 768px) {
-            .logo-text { font-size: 2.5rem; }
-            .items-grid { grid-template-columns: 1fr; }
-            .share-buttons { flex-direction: column; }
-            .bid-form { flex-direction: column; }
+            .items-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-methods {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .contact-btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+            
+            .logo h1 {
+                font-size: 2.2rem;
+            }
         }
         
-        /* Animations */
+        /* Animation */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .item-card {
             animation: fadeIn 0.5s ease-out;
         }
         
-        /* Notification badge */
-        .notification-badge {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--success);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 50px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            display: none;
+        /* Status Indicator */
+        .status {
+            display: inline-flex;
             align-items: center;
-            gap: 10px;
-            z-index: 100;
-            animation: slideUp 0.3s ease-out;
+            gap: 8px;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin: 5px;
         }
         
-        @keyframes slideUp {
-            from { transform: translateY(100px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        .available {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .sold {
+            background: #f8d7da;
+            color: #721c24;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <!-- Header -->
-        <header class="header">
+        <header>
             <div class="logo">
-                <i class="fas fa-gavel logo-icon"></i>
-                <h1 class="logo-text">Kai's Auction</h1>
+                <i class="fas fa-gavel"></i>
+                <h1>Kai's Auction</h1>
             </div>
-            <p class="tagline">List your items. Share with friends. Receive bids via email. All for FREE!</p>
-            <button class="btn btn-primary" onclick="showAddItemModal()">
-                <i class="fas fa-plus"></i> Add New Item
-            </button>
+            <p class="tagline">Pre-owned items • Bid via DM • Simple & Fast</p>
+            
+            <div class="instructions">
+                <p><strong>How it works:</strong> See something you like? Note the item name and price, then DM me to place your bid!</p>
+            </div>
         </header>
         
-        <!-- Owner Setup -->
-        <section class="setup-section">
-            <h2 class="section-title"><i class="fas fa-cog"></i> Owner Setup</h2>
-            <p>Enter your email to receive bid notifications. This email will receive ALL bids from this page.</p>
-            <div class="form-group">
-                <label class="form-label">Your Email (where bids will be sent)</label>
-                <input type="email" id="ownerEmail" class="form-input" placeholder="your-email@gmail.com" required>
-            </div>
-            <button class="btn btn-primary" onclick="saveOwnerEmail()">
-                <i class="fas fa-save"></i> Save My Email
-            </button>
-            <div id="emailStatus" style="margin-top: 10px;"></div>
-        </section>
+        <!-- Items for Sale -->
+        <div class="items-grid" id="itemsContainer">
+            <!-- Items will be loaded here -->
+        </div>
         
-        <!-- Items for Bid -->
-        <section class="items-section">
-            <h2 class="section-title"><i class="fas fa-gift"></i> Items Available for Bidding</h2>
-            <p>Click on an item to see details and place a bid</p>
-            <div class="items-grid" id="itemsContainer">
-                <!-- Items will be loaded here -->
+        <!-- Contact Section -->
+        <section class="contact-section">
+            <h2 class="contact-title">Contact Me to Bid</h2>
+            <p>Direct message me with the item name and your bid amount.</p>
+            
+            <div class="contact-methods">
+                <a href="https://wa.me/1234567890" class="contact-btn whatsapp-btn" target="_blank">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </a>
+                <a href="https://t.me/yourusername" class="contact-btn telegram-btn" target="_blank">
+                    <i class="fab fa-telegram"></i> Telegram
+                </a>
+                <a href="mailto:youremail@example.com" class="contact-btn email-btn">
+                    <i class="fas fa-envelope"></i> Email
+                </a>
             </div>
-        </section>
-        
-        <!-- Notifications Log -->
-        <section class="notifications-section">
-            <h2 class="section-title"><i class="fas fa-bell"></i> Recent Activity</h2>
-            <div class="notification-list" id="notificationList">
-                <!-- Notifications will appear here -->
-            </div>
+            
+            <p style="margin-top: 20px; font-size: 0.9rem; color: #666;">
+                Replace the links above with your actual contact info in the HTML code!
+            </p>
         </section>
         
         <!-- Share Section -->
         <section class="share-section">
-            <h2 class="section-title"><i class="fas fa-share-alt"></i> Share with Friends</h2>
-            <p>Share this page so friends can place bids!</p>
+            <h2>Share with Friends</h2>
+            <p>Send this page to friends who might be interested!</p>
+            
             <div class="share-buttons">
-                <button class="share-btn whatsapp-btn" onclick="shareViaWhatsApp()">
+                <button class="share-btn" onclick="shareViaWhatsApp()">
                     <i class="fab fa-whatsapp"></i> WhatsApp
                 </button>
-                <button class="share-btn email-btn" onclick="shareViaEmail()">
-                    <i class="fas fa-envelope"></i> Email
+                <button class="share-btn" onclick="shareViaMessage()">
+                    <i class="fas fa-sms"></i> Text
                 </button>
-                <button class="share-btn link-btn" onclick="copyLink()">
+                <button class="share-btn" onclick="copyLink()">
                     <i class="fas fa-link"></i> Copy Link
                 </button>
             </div>
-            <div id="linkCopied" style="margin-top: 10px; color: var(--success); display: none;">
-                <i class="fas fa-check"></i> Link copied to clipboard!
+            
+            <div id="linkCopied" style="margin-top: 15px; color: #28a745; display: none;">
+                <i class="fas fa-check-circle"></i> Link copied to clipboard!
             </div>
         </section>
         
         <!-- Footer -->
-        <footer class="footer">
-            <p><i class="fas fa-heart"></i> Kai's Auction - Free Bidding Platform</p>
-            <p>Hosted on GitHub Pages | No fees, no registration required</p>
-            <p id="siteUrl" style="margin-top: 10px; font-family: monospace; background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 5px; display: inline-block;"></p>
+        <footer>
+            <p><strong>Kai's Auction</strong> • Simple DM-based Bidding</p>
+            <p>No registration needed • No fees • DM to bid</p>
+            <p style="margin-top: 15px; font-family: monospace; background: #f1f3f5; padding: 8px 15px; border-radius: 5px; display: inline-block;">
+                <span id="siteUrl">Loading...</span>
+            </p>
+            <p style="margin-top: 10px; font-size: 0.8rem;">
+                Hosted for free on GitHub Pages
+            </p>
         </footer>
-        
-        <!-- Notification Badge -->
-        <div class="notification-badge" id="notificationBadge">
-            <i class="fas fa-check-circle"></i>
-            <span>Bid placed successfully!</span>
-        </div>
-    </div>
-    
-    <!-- Add Item Modal -->
-    <div class="modal" id="addItemModal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeAddItemModal()">&times;</span>
-            <h2 class="modal-title">Add New Item</h2>
-            <div class="form-group">
-                <label class="form-label">Item Name</label>
-                <input type="text" id="itemName" class="form-input" placeholder="e.g., Vintage Camera, Gaming Console" required>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Description</label>
-                <textarea id="itemDescription" class="form-input" placeholder="Describe your item..." rows="3" required></textarea>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Starting Price ($)</label>
-                <input type="number" id="itemPrice" class="form-input" placeholder="0.00" step="0.01" min="0" required>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Image URL (optional)</label>
-                <input type="url" id="itemImage" class="form-input" placeholder="https://example.com/image.jpg">
-                <small>Leave blank for default image</small>
-            </div>
-            <button class="btn btn-primary" onclick="addNewItem()">
-                <i class="fas fa-plus"></i> Add Item
-            </button>
-        </div>
-    </div>
-    
-    <!-- Bid Modal -->
-    <div class="modal" id="bidModal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeBidModal()">&times;</span>
-            <h2 class="modal-title" id="bidItemTitle">Place Bid</h2>
-            <div class="form-group">
-                <label class="form-label">Your Name</label>
-                <input type="text" id="bidderName" class="form-input" placeholder="Enter your name" required>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Your Email</label>
-                <input type="email" id="bidderEmail" class="form-input" placeholder="your-email@example.com" required>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Bid Amount ($)</label>
-                <input type="number" id="bidAmount" class="form-input" placeholder="0.00" step="0.01" min="0" required>
-                <small>Current highest bid: $<span id="currentHighest">0.00</span></small>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Message (optional)</label>
-                <textarea id="bidMessage" class="form-input" placeholder="Add a message..." rows="2"></textarea>
-            </div>
-            <button class="btn btn-primary" onclick="submitBid()">
-                <i class="fas fa-paper-plane"></i> Submit Bid
-            </button>
-            <div id="bidStatus" style="margin-top: 15px;"></div>
-        </div>
     </div>
 
     <script>
-        // Configuration - REPLACE THIS WITH YOUR FORMSHINE ID
-        const FORMSHINE_ID = '';
-        
-        // State
-        let items = [];
-        let currentBidItem = null;
-        let ownerEmail = localStorage.getItem('kai_owner_email') || '';
-        
-        // Sample items (you can remove these and add your own)
-        const sampleItems = [
+        // Your items data - EDIT THESE!
+        const items = [
             {
                 id: 1,
                 name: "Vintage Camera",
-                description: "Like new condition, perfect for collectors",
+                description: "Like new condition, perfect for photography enthusiasts. Includes original case.",
                 price: 45.00,
-                highestBid: 50.00,
-                bids: 3,
-                image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&h=300&fit=crop"
+                image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&h=300&fit=crop",
+                status: "available"
             },
             {
                 id: 2,
                 name: "Designer Watch",
-                description: "Authentic, includes original box and papers",
+                description: "Authentic luxury watch, includes original box and papers. Keeps excellent time.",
                 price: 120.00,
-                highestBid: 150.00,
-                bids: 5,
-                image: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=400&h=300&fit=crop"
+                image: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=400&h=300&fit=crop",
+                status: "available"
             },
             {
                 id: 3,
                 name: "Gaming Console",
-                description: "With 2 controllers and 5 popular games",
+                description: "Latest model with 2 controllers and 5 popular games. Barely used.",
                 price: 200.00,
-                highestBid: 220.00,
-                bids: 7,
-                image: "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=400&h=300&fit=crop"
+                image: "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=400&h=300&fit=crop",
+                status: "available"
+            },
+            {
+                id: 4,
+                name: "Wireless Headphones",
+                description: "Noise-cancelling, excellent sound quality. Comes with charging case.",
+                price: 75.00,
+                image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop",
+                status: "available"
+            },
+            {
+                id: 5,
+                name: "Mountain Bike",
+                description: "21-speed mountain bike, good condition. Recently serviced.",
+                price: 150.00,
+                image: "https://images.unsplash.com/photo-1532298229144-0ec0c57515c7?w=400&h=300&fit=crop",
+                status: "available"
+            },
+            {
+                id: 6,
+                name: "Leather Jacket",
+                description: "Genuine leather, size M. Classic style, timeless piece.",
+                price: 85.00,
+                image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&h=300&fit=crop",
+                status: "available"
             }
         ];
         
-        // Initialize
+        // DM message template - EDIT THIS!
+        const dmTemplate = "Hi! I'd like to bid on [ITEM_NAME]. My bid is $[BID_AMOUNT]. [ADDITIONAL_MESSAGE]";
+        
+        // Initialize the page
         function init() {
-            // Load items from localStorage or use sample
-            const savedItems = localStorage.getItem('kai_auction_items');
-            items = savedItems ? JSON.parse(savedItems) : sampleItems;
-            
-            // Load owner email
-            if (ownerEmail) {
-                document.getElementById('ownerEmail').value = ownerEmail;
-            }
-            
-            // Display items
             renderItems();
-            
-            // Show site URL
             document.getElementById('siteUrl').textContent = window.location.href;
             
-            // Load notifications
-            loadNotifications();
+            // Load saved items if any
+            const savedItems = localStorage.getItem('kai_items');
+            if (savedItems) {
+                try {
+                    const parsed = JSON.parse(savedItems);
+                    if (parsed.length > 0) {
+                        items.length = 0;
+                        items.push(...parsed);
+                        renderItems();
+                    }
+                } catch (e) {
+                    console.log('Using default items');
+                }
+            }
         }
         
-        // Render items
+        // Render all items
         function renderItems() {
             const container = document.getElementById('itemsContainer');
             container.innerHTML = '';
             
             items.forEach(item => {
-                const itemCard = document.createElement('div');
-                itemCard.className = 'item-card';
-                itemCard.innerHTML = `
-                    <img src="${item.image || 'https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=400&h=300&fit=crop'}" 
-                         alt="${item.name}" class="item-image">
+                const card = document.createElement('div');
+                card.className = 'item-card';
+                card.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="item-image" 
+                         onerror="this.src='https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=400&h=300&fit=crop'">
                     <div class="item-content">
+                        <div class="status ${item.status}">
+                            <i class="fas fa-circle" style="font-size: 0.7rem;"></i>
+                            ${item.status === 'available' ? 'Available' : 'Sold'}
+                        </div>
                         <h3 class="item-title">${item.name}</h3>
                         <p class="item-description">${item.description}</p>
-                        <div class="item-price">$${item.highestBid.toFixed(2)}</div>
-                        <div class="bid-info">
-                            <span class="bid-count">${item.bids} bids</span>
-                            <span>Starting: $${item.price.toFixed(2)}</span>
+                        <div class="item-price">$${item.price.toFixed(2)}</div>
+                        
+                        <div class="bid-section">
+                            <div class="bid-price">Starting Bid: $${item.price.toFixed(2)}</div>
+                            <button class="dm-button" onclick="prepareDM('${item.name}', ${item.price})">
+                                <i class="fas fa-paper-plane"></i> DM Me to Bid
+                            </button>
                         </div>
-                        <button class="btn btn-primary" onclick="openBidModal(${item.id})" style="width: 100%;">
-                            <i class="fas fa-gavel"></i> Place Bid
-                        </button>
                     </div>
                 `;
-                container.appendChild(itemCard);
+                container.appendChild(card);
             });
         }
         
-        // Save owner email
-        function saveOwnerEmail() {
-            const email = document.getElementById('ownerEmail').value;
-            if (!email || !email.includes('@')) {
-                showStatus('emailStatus', 'Please enter a valid email', 'error');
-                return;
-            }
+        // Prepare DM message
+        function prepareDM(itemName, itemPrice) {
+            const defaultBid = itemPrice + 5;
+            const message = prompt(
+                `Enter your bid for "${itemName}":\n(Minimum: $${itemPrice.toFixed(2)})`,
+                defaultBid.toFixed(2)
+            );
             
-            ownerEmail = email;
-            localStorage.setItem('kai_owner_email', email);
-            showStatus('emailStatus', 'Email saved! You will receive bid notifications.', 'success');
-            
-            // Add notification
-            addNotification('Owner email updated');
-        }
-        
-        // Open bid modal
-        function openBidModal(itemId) {
-            currentBidItem = items.find(item => item.id === itemId);
-            if (!currentBidItem) return;
-            
-            document.getElementById('bidItemTitle').textContent = `Bid on ${currentBidItem.name}`;
-            document.getElementById('currentHighest').textContent = currentBidItem.highestBid.toFixed(2);
-            document.getElementById('bidAmount').min = currentBidItem.highestBid + 0.01;
-            document.getElementById('bidAmount').value = (currentBidItem.highestBid + 1).toFixed(2);
-            
-            // Clear form
-            document.getElementById('bidderName').value = '';
-            document.getElementById('bidderEmail').value = '';
-            document.getElementById('bidMessage').value = '';
-            document.getElementById('bidStatus').innerHTML = '';
-            
-            document.getElementById('bidModal').style.display = 'flex';
-        }
-        
-        // Close bid modal
-        function closeBidModal() {
-            document.getElementById('bidModal').style.display = 'none';
-        }
-        
-        // Submit bid
-        async function submitBid() {
-            const name = document.getElementById('bidderName').value.trim();
-            const email = document.getElementById('bidderEmail').value.trim();
-            const amount = parseFloat(document.getElementById('bidAmount').value);
-            const message = document.getElementById('bidMessage').value.trim();
-            
-            if (!name || !email || !amount) {
-                showStatus('bidStatus', 'Please fill all required fields', 'error');
-                return;
-            }
-            
-            if (amount <= currentBidItem.highestBid) {
-                showStatus('bidStatus', `Bid must be higher than $${currentBidItem.highestBid.toFixed(2)}`, 'error');
-                return;
-            }
-            
-            showStatus('bidStatus', 'Submitting bid...', 'loading');
-            
-            try {
-                // Send bid to Formshine (your email)
-                const response = await sendBidToEmail(name, email, amount, message);
+            if (message && !isNaN(parseFloat(message)) && parseFloat(message) >= itemPrice) {
+                const bidAmount = parseFloat(message);
+                const additional = prompt("Add a message (optional):", "I'm interested in this item!");
                 
-                if (response.ok) {
-                    // Update item
-                    currentBidItem.highestBid = amount;
-                    currentBidItem.bids++;
-                    
-                    // Save to localStorage
-                    localStorage.setItem('kai_auction_items', JSON.stringify(items));
-                    
-                    // Update UI
-                    renderItems();
-                    
-                    // Add notification
-                    const notification = `${name} bid $${amount.toFixed(2)} on ${currentBidItem.name}`;
-                    addNotification(notification);
-                    
-                    // Show success
-                    showStatus('bidStatus', 'Bid submitted successfully!', 'success');
-                    
-                    // Show notification badge
-                    showNotificationBadge();
-                    
-                    // Close modal after delay
-                    setTimeout(() => {
-                        closeBidModal();
-                        document.getElementById('bidStatus').innerHTML = '';
-                    }, 2000);
-                } else {
-                    throw new Error('Failed to send bid');
-                }
-            } catch (error) {
-                console.error('Error submitting bid:', error);
-                showStatus('bidStatus', 'Error submitting bid. Please try again.', 'error');
+                const dmMessage = dmTemplate
+                    .replace('[ITEM_NAME]', itemName)
+                    .replace('[BID_AMOUNT]', bidAmount.toFixed(2))
+                    .replace('[ADDITIONAL_MESSAGE]', additional || '');
+                
+                alert("Copy this message and send it to me via DM:\n\n" + dmMessage + 
+                      "\n\nClick OK to open WhatsApp, or copy the message above.");
+                
+                // Open WhatsApp with the message
+                const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(dmMessage)}`;
+                window.open(whatsappUrl, '_blank');
+            } else if (message) {
+                alert(`Bid must be at least $${itemPrice.toFixed(2)}`);
             }
-        }
-        
-        // Send bid to owner's email using Formshine
-        async function sendBidToEmail(bidderName, bidderEmail, amount, message) {
-            const itemName = currentBidItem.name;
-            const itemDescription = currentBidItem.description;
-            const previousBid = currentBidItem.highestBid;
-            
-            // Formshine endpoint (replace with your ID)
-            const formshineUrl = `https://formshine.io/api/forms/${FORMSHINE_ID}/submit`;
-            
-            const bidData = {
-                item: itemName,
-                item_description: itemDescription,
-                bidder_name: bidderName,
-                bidder_email: bidderEmail,
-                bid_amount: amount.toFixed(2),
-                previous_bid: previousBid.toFixed(2),
-                message: message || 'No message provided',
-                timestamp: new Date().toLocaleString(),
-                page_url: window.location.href
-            };
-            
-            // Send to Formshine
-            const response = await fetch(formshineUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(bidData)
-            });
-            
-            return response;
-        }
-        
-        // Add notification
-        function addNotification(text) {
-            const notifications = JSON.parse(localStorage.getItem('kai_notifications') || '[]');
-            const notification = {
-                text,
-                time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
-                date: new Date().toLocaleDateString()
-            };
-            
-            notifications.unshift(notification);
-            if (notifications.length > 10) notifications.pop();
-            
-            localStorage.setItem('kai_notifications', JSON.stringify(notifications));
-            loadNotifications();
-        }
-        
-        // Load notifications
-        function loadNotifications() {
-            const notifications = JSON.parse(localStorage.getItem('kai_notifications') || '[]');
-            const container = document.getElementById('notificationList');
-            
-            if (notifications.length === 0) {
-                container.innerHTML = '<div class="notification-item"><p>No activity yet. Share the page to get bids!</p></div>';
-                return;
-            }
-            
-            container.innerHTML = notifications.map(notif => `
-                <div class="notification-item">
-                    <p class="notification-text">${notif.text}</p>
-                    <div class="notification-time">${notif.date} at ${notif.time}</div>
-                </div>
-            `).join('');
-        }
-        
-        // Show notification badge
-        function showNotificationBadge() {
-            const badge = document.getElementById('notificationBadge');
-            badge.style.display = 'flex';
-            setTimeout(() => {
-                badge.style.display = 'none';
-            }, 3000);
-        }
-        
-        // Show status message
-        function showStatus(elementId, message, type) {
-            const element = document.getElementById(elementId);
-            const colors = {
-                success: '#38b000',
-                error: '#ff006e',
-                loading: '#3a86ff'
-            };
-            
-            element.innerHTML = `<span style="color: ${colors[type]}; font-weight: 600;">
-                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'spinner fa-spin'}"></i>
-                ${message}
-            </span>`;
         }
         
         // Share functions
         function shareViaWhatsApp() {
-            const text = `Check out Kai's Auction! Bid on items here: ${window.location.href}`;
+            const text = `Check out Kai's Auction! Browse pre-owned items and DM to bid: ${window.location.href}`;
             window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
         }
         
-        function shareViaEmail() {
-            const subject = "Bid on my items at Kai's Auction";
-            const body = `Hi! I'm using Kai's Auction to sell some items. Come check it out and place a bid!\n\n${window.location.href}\n\nYou can bid directly on the page and I'll get notified immediately!`;
-            window.open(`mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
+        function shareViaMessage() {
+            const text = `Kai's Auction - Browse items and DM to bid: ${window.location.href}`;
+            if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+                window.open(`sms:&body=${encodeURIComponent(text)}`);
+            } else {
+                window.open(`sms:?body=${encodeURIComponent(text)}`);
+            }
         }
         
         function copyLink() {
@@ -862,60 +562,21 @@
             }, 2000);
         }
         
-        // Item management
-        function showAddItemModal() {
-            document.getElementById('addItemModal').style.display = 'flex';
-        }
-        
-        function closeAddItemModal() {
-            document.getElementById('addItemModal').style.display = 'none';
-        }
-        
-        function addNewItem() {
-            const name = document.getElementById('itemName').value.trim();
-            const description = document.getElementById('itemDescription').value.trim();
-            const price = parseFloat(document.getElementById('itemPrice').value);
-            const image = document.getElementById('itemImage').value.trim();
-            
-            if (!name || !description || isNaN(price)) {
-                alert('Please fill all required fields');
-                return;
-            }
-            
-            const newItem = {
-                id: Date.now(),
-                name,
-                description,
-                price,
-                highestBid: price,
-                bids: 0,
-                image: image || 'https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=400&h=300&fit=crop'
-            };
-            
-            items.push(newItem);
-            localStorage.setItem('kai_auction_items', JSON.stringify(items));
-            
-            renderItems();
-            closeAddItemModal();
-            addNotification(`Added new item: ${name}`);
-            
-            // Clear form
-            document.getElementById('itemName').value = '';
-            document.getElementById('itemDescription').value = '';
-            document.getElementById('itemPrice').value = '';
-            document.getElementById('itemImage').value = '';
-        }
-        
-        // Close modals when clicking outside
-        window.onclick = function(event) {
-            const addModal = document.getElementById('addItemModal');
-            const bidModal = document.getElementById('bidModal');
-            
-            if (event.target === addModal) {
-                closeAddItemModal();
-            }
-            if (event.target === bidModal) {
-                closeBidModal();
+        // Simple item editor (optional, accessible via console)
+        window.editItems = function() {
+            const json = JSON.stringify(items, null, 2);
+            const newJson = prompt('Edit items (JSON format):', json);
+            if (newJson) {
+                try {
+                    const parsed = JSON.parse(newJson);
+                    items.length = 0;
+                    items.push(...parsed);
+                    localStorage.setItem('kai_items', JSON.stringify(parsed));
+                    renderItems();
+                    alert('Items updated!');
+                } catch (e) {
+                    alert('Invalid JSON format');
+                }
             }
         }
         
